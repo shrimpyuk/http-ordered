@@ -8,6 +8,7 @@ use rand::{Rng, SeedableRng};
 
 use std::collections::HashMap;
 
+#[cfg(not(miri))]
 #[test]
 fn header_map_fuzz() {
     fn prop(fuzz: Fuzz) -> TestResult {
@@ -282,6 +283,8 @@ fn gen_header_name(g: &mut StdRng) -> HeaderName {
         header::ALT_SVC,
         header::AUTHORIZATION,
         header::CACHE_CONTROL,
+        header::CACHE_STATUS,
+        header::CDN_CACHE_CONTROL,
         header::CONNECTION,
         header::CONTENT_DISPOSITION,
         header::CONTENT_ENCODING,

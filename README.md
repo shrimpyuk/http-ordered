@@ -1,30 +1,4 @@
-# http-ordered
-
-Fork of [http](https://github.com/hyperium/http) that supports header ordering.
-
-Disregarding for performance, it replaces HeaderMap robinhood hashing implementation with [indexmap](https://github.com/bluss/indexmap).
-
-Almost all of the public API's of HeaderMap are the same, except the IntoHeaderName type, which has been removed. It should be mostly compatible with any library that uses upstream http.
-
-## Features
-* HeaderMap keeps the order of insertion
-* HeaderMap.sort_by function that allows you to sort headers by key and value
-
-## Patching [reqwest](https://github.com/seanmonstar/reqwest)
-Due to some borrow checker inconsistencies (PRs are welcome), you won't be able to compile reqwest right of the bat, however only one function needs to be changed, and an example implementation can be viewed [here](https://github.com/ignassew/reqwestplus/commit/314a180fb57571767ad698b38300f5b504bf1409).
-
-Once you have fixed that issue, you will need to insert this in your `Cargo.toml`:
-```toml
-[patch.crates-io]
-http = { git = "https://github.com/ignassew/http-ordered" }
-```
-
-If you don't want to patch the library yourself, check out [reqwestplus](#reqwestplus)
-
-## reqwestplus
-This fork is a part of a larger project - [reqwestplus](https://github.com/ignassew/reqwestplus), which is itself a fork of reqwest that has additional features that help with matching browser's fingerprint.
-
-## Original README
+# HTTP
 
 A general purpose library of common HTTP types
 

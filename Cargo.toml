@@ -4,18 +4,18 @@ name = "http"
 # - Update html_root_url in lib.rs.
 # - Update CHANGELOG.md.
 # - Create git tag
-version = "0.2.8"
+version = "0.2.11"
 readme = "README.md"
-repository = "https://github.com/ignassew/http-ordered"
+documentation = "https://docs.rs/http"
+repository = "https://github.com/hyperium/http"
 license = "MIT OR Apache-2.0"
 authors = [
   "Alex Crichton <alex@alexcrichton.com>",
   "Carl Lerche <me@carllerche.com>",
   "Sean McArthur <sean@seanmonstar.com>",
-  "ignassew"
 ]
 description = """
-Fork of http library that supports header ordering.
+A set of types for representing HTTP requests and responses.
 """
 keywords = ["http"]
 categories = ["web-programming"]

@@ -345,6 +345,18 @@ standard_headers! {
     /// response.
     (CacheControl, CACHE_CONTROL, b"cache-control");
 
+     /// Indicates how caches have handled a response and its corresponding request.
+     ///
+     /// See [RFC 9211](https://www.rfc-editor.org/rfc/rfc9211.html).
+    (CacheStatus, CACHE_STATUS, b"cache-status");
+
+    /// Specifies directives that allow origin servers to control the behavior of CDN caches
+    /// interposed between them and clients separately from other caches that might handle the
+    /// response.
+    ///
+    /// See [RFC 9213](https://www.rfc-editor.org/rfc/rfc9213.html).
+    (CdnCacheControl, CDN_CACHE_CONTROL, b"cdn-cache-control");
+
     /// Controls whether or not the network connection stays open after the
     /// current transaction finishes.
     ///
@@ -992,32 +1004,32 @@ standard_headers! {
 // mapped by HEADER_CHARS, maps to a valid single-byte UTF-8 codepoint.
 const HEADER_CHARS: [u8; 256] = [
     //  0      1      2      3      4      5      6      7      8      9
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //   x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  1x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  2x
-        0,     0,     0,  b'!',  b'"',  b'#',  b'$',  b'%',  b'&', b'\'', //  3x
-        0,     0,  b'*',  b'+',     0,  b'-',  b'.',     0,  b'0',  b'1', //  4x
-     b'2',  b'3',  b'4',  b'5',  b'6',  b'7',  b'8',  b'9',     0,     0, //  5x
-        0,     0,     0,     0,     0,  b'a',  b'b',  b'c',  b'd',  b'e', //  6x
-     b'f',  b'g',  b'h',  b'i',  b'j',  b'k',  b'l',  b'm',  b'n',  b'o', //  7x
-     b'p',  b'q',  b'r',  b's',  b't',  b'u',  b'v',  b'w',  b'x',  b'y', //  8x
-     b'z',     0,     0,     0,  b'^',  b'_',  b'`',  b'a',  b'b',  b'c', //  9x
-     b'd',  b'e',  b'f',  b'g',  b'h',  b'i',  b'j',  b'k',  b'l',  b'm', // 10x
-     b'n',  b'o',  b'p',  b'q',  b'r',  b's',  b't',  b'u',  b'v',  b'w', // 11x
-     b'x',  b'y',  b'z',     0,  b'|',     0,  b'~',     0,     0,     0, // 12x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 13x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 14x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 15x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 16x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 17x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 18x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 19x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 20x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 21x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 22x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 23x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 24x
-        0,     0,     0,     0,     0,     0                              // 25x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //   x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  1x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  2x
+    0,     0,     0,  b'!',  b'"',  b'#',  b'$',  b'%',  b'&', b'\'', //  3x
+    0,     0,  b'*',  b'+',     0,  b'-',  b'.',     0,  b'0',  b'1', //  4x
+    b'2',  b'3',  b'4',  b'5',  b'6',  b'7',  b'8',  b'9',     0,     0, //  5x
+    0,     0,     0,     0,     0,  b'a',  b'b',  b'c',  b'd',  b'e', //  6x
+    b'f',  b'g',  b'h',  b'i',  b'j',  b'k',  b'l',  b'm',  b'n',  b'o', //  7x
+    b'p',  b'q',  b'r',  b's',  b't',  b'u',  b'v',  b'w',  b'x',  b'y', //  8x
+    b'z',     0,     0,     0,  b'^',  b'_',  b'`',  b'a',  b'b',  b'c', //  9x
+    b'd',  b'e',  b'f',  b'g',  b'h',  b'i',  b'j',  b'k',  b'l',  b'm', // 10x
+    b'n',  b'o',  b'p',  b'q',  b'r',  b's',  b't',  b'u',  b'v',  b'w', // 11x
+    b'x',  b'y',  b'z',     0,  b'|',     0,  b'~',     0,     0,     0, // 12x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 13x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 14x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 15x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 16x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 17x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 18x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 19x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 20x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 21x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 22x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 23x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 24x
+    0,     0,     0,     0,     0,     0                              // 25x
 ];
 
 /// Valid header name characters for HTTP/2.0 and HTTP/3.0
@@ -1025,32 +1037,32 @@ const HEADER_CHARS: [u8; 256] = [
 // mapped by HEADER_CHARS_H2, maps to a valid single-byte UTF-8 codepoint.
 const HEADER_CHARS_H2: [u8; 256] = [
     //  0      1      2      3      4      5      6      7      8      9
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //   x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  1x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  2x
-        0,     0,     0,  b'!',  b'"',  b'#',  b'$',  b'%',  b'&', b'\'', //  3x
-        0,     0,  b'*',  b'+',     0,  b'-',  b'.',     0,  b'0',  b'1', //  4x
-     b'2',  b'3',  b'4',  b'5',  b'6',  b'7',  b'8',  b'9',     0,     0, //  5x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  6x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  7x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  8x
-        0,     0,     0,     0,  b'^',  b'_',  b'`',  b'a',  b'b',  b'c', //  9x
-     b'd',  b'e',  b'f',  b'g',  b'h',  b'i',  b'j',  b'k',  b'l',  b'm', // 10x
-     b'n',  b'o',  b'p',  b'q',  b'r',  b's',  b't',  b'u',  b'v',  b'w', // 11x
-     b'x',  b'y',  b'z',     0,  b'|',     0,  b'~',     0,     0,     0, // 12x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 13x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 14x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 15x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 16x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 17x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 18x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 19x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 20x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 21x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 22x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 23x
-        0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 24x
-        0,     0,     0,     0,     0,     0                              // 25x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //   x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  1x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  2x
+    0,     0,     0,  b'!',  b'"',  b'#',  b'$',  b'%',  b'&', b'\'', //  3x
+    0,     0,  b'*',  b'+',     0,  b'-',  b'.',     0,  b'0',  b'1', //  4x
+    b'2',  b'3',  b'4',  b'5',  b'6',  b'7',  b'8',  b'9',     0,     0, //  5x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  6x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  7x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //  8x
+    0,     0,     0,     0,  b'^',  b'_',  b'`',  b'a',  b'b',  b'c', //  9x
+    b'd',  b'e',  b'f',  b'g',  b'h',  b'i',  b'j',  b'k',  b'l',  b'm', // 10x
+    b'n',  b'o',  b'p',  b'q',  b'r',  b's',  b't',  b'u',  b'v',  b'w', // 11x
+    b'x',  b'y',  b'z',     0,  b'|',     0,  b'~',     0,     0,     0, // 12x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 13x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 14x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 15x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 16x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 17x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 18x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 19x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 20x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 21x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 22x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 23x
+    0,     0,     0,     0,     0,     0,     0,     0,     0,     0, // 24x
+    0,     0,     0,     0,     0,     0                              // 25x
 ];
 
 fn parse_hdr<'a>(
@@ -1331,8 +1343,8 @@ impl<'a> From<&'a HeaderName> for HeaderName {
 
 #[doc(hidden)]
 impl<T> From<Repr<T>> for Bytes
-where
-    T: Into<Bytes>,
+    where
+        T: Into<Bytes>,
 {
     fn from(repr: Repr<T>) -> Bytes {
         match repr {
@@ -1519,8 +1531,8 @@ impl<'a> HdrName<'a> {
     }
 
     pub fn from_static<F, U>(hdr: &'static str, f: F) -> U
-    where
-        F: FnOnce(HdrName<'_>) -> U,
+        where
+            F: FnOnce(HdrName<'_>) -> U,
     {
         let mut buf = uninit_u8_array();
         let hdr =
