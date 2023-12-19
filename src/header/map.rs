@@ -419,8 +419,8 @@ impl<T> HeaderMap<T> {
     /// assert_eq!(map.get("host").unwrap(), &"hello");
     /// ```
     pub fn get<K>(&self, key: K) -> Option<&T>
-        where
-            K: AsHeaderName,
+    where
+        K: AsHeaderName,
     {
         if let Ok(key) = key.try_into() {
             if let Some(value) = self.inner.get(&key) {
@@ -457,8 +457,8 @@ impl<T> HeaderMap<T> {
     /// assert_eq!(map.get(HOST).unwrap(), &"hello-world");
     /// ```
     pub fn get_mut<K>(&mut self, key: K) -> Option<&mut T>
-        where
-            K: AsHeaderName,
+    where
+        K: AsHeaderName,
     {
         if let Ok(key) = key.try_into() {
             if let Some(value) = self.inner.get_mut(&key) {
@@ -495,8 +495,8 @@ impl<T> HeaderMap<T> {
     /// assert!(iter.next().is_none());
     /// ```
     pub fn get_all<K>(&self, key: K) -> GetAll<'_, T>
-        where
-            K: AsHeaderName,
+    where
+        K: AsHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap();
         if let Some(vec) = self.inner.get(&key) {
@@ -520,8 +520,8 @@ impl<T> HeaderMap<T> {
     /// assert!(map.contains_key("host"));
     /// ```
     pub fn contains_key<K>(&self, key: K) -> bool
-        where
-            K: AsHeaderName,
+    where
+        K: AsHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap();
         self.inner.contains_key(&key)
@@ -682,7 +682,7 @@ impl<T> HeaderMap<T> {
     /// assert_eq!(drain.next(), None);
     /// ```
     pub fn drain(&mut self) -> Drain<'_, T> {
-        Drain { inner: self.inner.drain(RangeFull), buffer: Vec::new() }
+            Drain { inner: self.inner.drain(RangeFull), buffer: Vec::new() }
     }
 
     /// Gets the given key's corresponding entry in the map for in-place
@@ -710,8 +710,8 @@ impl<T> HeaderMap<T> {
     /// assert_eq!(map["x-hello"], 1);
     /// ```
     pub fn entry<K>(&mut self, key: K) -> Entry<'_, T>
-        where
-            K: IntoHeaderName,
+    where
+        K: IntoHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap().clone();
         if self.inner.contains_key(&key) {
@@ -719,7 +719,7 @@ impl<T> HeaderMap<T> {
         } else {
             Entry::Vacant(VacantEntry { map: self, key })
         }
-
+        
     }
 
     /// Gets the given key's corresponding entry in the map for in-place
@@ -732,8 +732,8 @@ impl<T> HeaderMap<T> {
     /// do not parse as a valid `HeaderName`, this returns an
     /// `InvalidHeaderName` error.
     pub fn try_entry<K>(&mut self, key: K) -> Result<Entry<'_, T>, InvalidHeaderName>
-        where
-            K: AsHeaderName,
+    where
+        K: AsHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap();
         Ok(self.entry(key))
@@ -767,8 +767,8 @@ impl<T> HeaderMap<T> {
     /// assert_eq!("world", prev);
     /// ```
     pub fn insert<K>(&mut self, key: K, val: T) -> Option<T>
-        where
-            K: IntoHeaderName,
+    where
+        K: IntoHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap();
         self.inner
@@ -803,8 +803,8 @@ impl<T> HeaderMap<T> {
     /// assert_eq!("earth", *i.next().unwrap());
     /// ```
     pub fn append<K>(&mut self, key: K, value: T) -> bool
-        where
-            K: IntoHeaderName,
+    where
+        K: IntoHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap();
         if let Some(vec) = self.inner.get_mut(&key) {
@@ -837,8 +837,8 @@ impl<T> HeaderMap<T> {
     /// assert!(map.remove(HOST).is_none());
     /// ```
     pub fn remove<K>(&mut self, key: K) -> Option<T>
-        where
-            K: AsHeaderName,
+    where
+        K: AsHeaderName,
     {
         let key: HeaderName = key.try_into().ok().unwrap();
         self.inner
@@ -887,8 +887,8 @@ impl<T> HeaderMap<T> {
     /// assert_eq!(iter.next().unwrap().0, Some("third".parse().unwrap()));
     /// ```
     pub fn sort_by<F>(&mut self, cmp: F)
-        where
-            F: FnMut(&HeaderName, &Vec<T>, &HeaderName, &Vec<T>) -> std::cmp::Ordering,
+    where
+        F: FnMut(&HeaderName, &Vec<T>, &HeaderName, &Vec<T>) -> std::cmp::Ordering,
     {
         self.inner.sort_by(cmp);
     }
@@ -972,8 +972,8 @@ impl<T> IntoIterator for HeaderMap<T> {
 
 impl<T> FromIterator<(HeaderName, T)> for HeaderMap<T> {
     fn from_iter<I>(iter: I) -> Self
-        where
-            I: IntoIterator<Item = (HeaderName, T)>,
+    where
+        I: IntoIterator<Item = (HeaderName, T)>,
     {
         let mut map = HeaderMap::default();
         map.extend(iter);
@@ -1132,8 +1132,8 @@ impl<T> Default for HeaderMap<T> {
 }
 
 impl<'a, K, T> ops::Index<K> for HeaderMap<T>
-    where
-        K: AsHeaderName,
+where
+    K: AsHeaderName,
 {
     type Output = T;
 
@@ -1448,7 +1448,7 @@ impl<'a, T> VacantEntry<'a, T> {
     /// ```
     pub fn insert(self, value: T) -> &'a mut T {
         // This entry is vacant, so there shouldn't be any values before.
-        assert!(self.map.insert(&self.key, value).is_none());
+        assert!(self.map.insert(&self.key, value).is_none()); 
         self.map.get_mut(&self.key).unwrap()
     }
 
@@ -1861,7 +1861,7 @@ impl<'a, T> OccupiedEntry<'a, T> {
             self.key,
             ValueDrain {
                 inner: values,
-                lt: PhantomData
+                lt: PhantomData 
             }
         )
     }
@@ -1985,7 +1985,7 @@ unsafe impl<'a, T: Send> Send for ValueDrain<'a, T> {}
 mod into_header_name {
     use super::HeaderName;
     use std::convert::TryInto;
-
+    
     /// A marker trait used to identify values that can be used as insert keys
     /// to a `HeaderMap`.
     pub trait IntoHeaderName: TryInto<HeaderName> {}

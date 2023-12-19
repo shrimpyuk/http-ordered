@@ -70,7 +70,7 @@
 //! [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
 //! [Robin Hood hashing]: https://en.wikipedia.org/wiki/Hash_table#Robin_Hood_hashing
 
-pub mod map;
+mod map;
 mod name;
 mod value;
 
